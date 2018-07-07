@@ -29,3 +29,16 @@ Test(options, noecho) {
   cr_assert(e == 0);
   cr_assert(options.noecho);
 }
+
+Test(options, expression) {
+  options_t options;
+  options.expression = NULL;
+
+  int argc = 3;
+  char *argv[] = { "zed", "-e", "yolo" };
+
+  int e;
+  e = parse_options(argc, argv, &options);
+  cr_assert(e == 0);
+  cr_assert_str_eq(options.expression, "yolo");
+}

@@ -5,7 +5,6 @@ char *invalid_string = "This string is invalid!";
 
 Test(expression, empty) {
   expression_t expr;
-  expr.cmd = '\0'; 
 
   int e;
   e = parse_expression("", &expr);
@@ -13,10 +12,23 @@ Test(expression, empty) {
 }
 
 Test(expression, noregex) {
+  char *raw = "/d";
+  expression_t expr;
+  expr.regex = (char *) 0xABAD1DEA;
+  expr.cmd = '\0';
+
+  int e;
+  e = parse_expression(raw, &expr);
+  cr_assert(e == 0);
+  cr_assert(expr.regex == NULL);
+  cr_assert(expr.cmd == 'd');
+}
+
+Test(expression, noregex_or_delimiter) {
   char *raw = "d";
   expression_t expr;
   expr.regex = (char *) 0xABAD1DEA;
-  expr.cmd = '\0'; 
+  expr.cmd = '\0';
 
   int e;
   e = parse_expression(raw, &expr);
@@ -27,7 +39,7 @@ Test(expression, noregex) {
 }
 
 Test(expression, delete_regex) {
-  char *raw = "/hello/d";
+  char *raw = "hello/d";
   expression_t expr;
   expr.regex = invalid_string;
   expr.cmd = '\0'; 

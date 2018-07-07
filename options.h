@@ -5,6 +5,7 @@
 
 typedef struct _options_t {
   bool noecho;
+  char *expression;
 } options_t;
 
 int parse_options(int argc, char **argv, options_t *options);
